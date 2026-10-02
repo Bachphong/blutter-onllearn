@@ -8,20 +8,21 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: install deps
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pyelftools python3-requests cmake ninja-build build-essential pkg-config libicu-dev libcapstone-dev
       - name: cache dart build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
-            dartsdk
-            build
+            blutter/dartsdk
+            blutter/build
+            blutter/bin
           key: blutter-dart-${{ hashFiles('lib/arm64-v8a/libflutter.so') }}
       - name: run blutter
-        run: python3 blutter.py lib/arm64-v8a out
+        run: python3 blutter/blutter.py lib/arm64-v8a out
       - name: upload output
         if: always()
         uses: actions/upload-artifact@v4
